@@ -98,8 +98,6 @@ public class CalibrationTest extends Activity {
     private final File calibrationFile = new File(filePath);
     protected FileWriter fileWriter;
 
-    private FileOutputStream fos;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,14 +125,6 @@ public class CalibrationTest extends Activity {
         boolean result = doKeyUp(keyCode, msg);
 
         if (QUIT && keyCode == KeyEvent.KEYCODE_9){
-            // Close and Save File
-            if (fos != null){
-                try{fos.close();}catch(Exception e){
-                    Log.d("TAG", "Exception Occured While Trying to Close and Save "
-                            + e.toString());
-                };
-            }
-
             this.finish();
             super.finish();
         }
@@ -158,8 +148,9 @@ public class CalibrationTest extends Activity {
                 byte[] defaultPointercal = new byte[20];
                 String defaultPointercalValues = "1 0 0 0 1 0 1" + "\n";
                 defaultPointercal = defaultPointercalValues.getBytes();
-                fos = this.openFileOutput("pointercal", MODE_WORLD_READABLE);
-                fos.write(defaultPointercal);
+                FileOutputStream ws = this.openFileOutput("pointercal", MODE_WORLD_READABLE);
+                ws.write(defaultPointercal);
+                ws.close();
             }catch (Exception e){
                 Log.e(TAG, "Exception Occured: Trying to default pointercal: " +
                         e.toString());
@@ -282,7 +273,7 @@ public class CalibrationTest extends Activity {
                     }
 
                     try{
-                        fos = this.openFileOutput("pointercal", MODE_WORLD_READABLE);
+                        FileOutputStream ws = this.openFileOutput("pointercal", MODE_WORLD_READABLE);
                         String rawValues = new String();
 
                         for (int i =0; i < params.length; i++){
@@ -290,7 +281,8 @@ public class CalibrationTest extends Activity {
                             rawValues += " ";
                         }
 
-                        fos.write(rawValues.getBytes());
+                        ws.write(rawValues.getBytes());
+                        ws.close();
                     }
                     catch (Exception e){
                         Log.e(TAG, "Exception Occured: Trying to change to World Readable: " +
