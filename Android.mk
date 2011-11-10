@@ -3,7 +3,7 @@ ifeq ($(TARGET_HAVE_TSLIB),true)
 
 	include $(CLEAR_VARS)
 
-	LOCAL_MODULE_TAGS := user development eng
+	LOCAL_MODULE_TAGS := optional
 
 	LOCAL_SRC_FILES := $(call all-subdir-java-files)
 
